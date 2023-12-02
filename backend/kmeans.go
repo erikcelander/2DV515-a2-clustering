@@ -18,26 +18,6 @@ const (
 	maxIterations    = 10  // Maximum iterations for K-means
 )
 
-// func main() {
-// 	blogs, err := readBlogsFromFile("./blogdata.txt")
-
-// 	if err != nil {
-// 		fmt.Println("Error:", err)
-// 		return
-// 	}
-
-// 	centroids := initializeCentroids(numClusters)
-
-// 	// K-means Clustering
-// 	for i := 0; i < maxIterations; i++ {
-// 		clearAssignments(centroids)
-// 		assignBlogsToCentroids(blogs, centroids)
-// 		updateCentroids(centroids)
-// 	}
-
-// 	printClusters(centroids)
-// }
-
 func initializeCentroids(k int) []*Centroid {
 	centroids := make([]*Centroid, k)
 

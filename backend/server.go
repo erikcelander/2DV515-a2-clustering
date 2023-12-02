@@ -16,38 +16,34 @@ type ClusterResult struct {
 }
 
 func main() {
-    blogs, err := readBlogsFromFile("./blogdata.txt")
-    if err != nil {
-        log.Fatal("Error reading blogs:", err)
-    }
-
-    centroids := initializeCentroids(numClusters)
-    for i := 0; i < maxIterations; i++ {
-        clearAssignments(centroids)
-        assignBlogsToCentroids(blogs, centroids)
-        updateCentroids(centroids)
-    }
-
-    StartServer(centroids)
-}
-
-func StartServer(centroids []*Centroid) {
 	http.HandleFunc("/clusters", func(w http.ResponseWriter, r *http.Request) {
-			w.Header().Set("Content-Type", "application/json")
-			result := prepareClusterResult(centroids)
-			
-			jsonResult, err := json.MarshalIndent(result, "", "    ")
-			if err != nil {
-					http.Error(w, err.Error(), http.StatusInternalServerError)
-					return
-			}
+		blogs, err := readBlogsFromFile("./blogdata.txt")
+		if err != nil {
+			http.Error(w, "Error reading blogs: "+err.Error(), http.StatusInternalServerError)
+			return
+		}
 
-			w.Write(jsonResult)
+		centroids := initializeCentroids(numClusters)
+		for i := 0; i < maxIterations; i++ {
+			clearAssignments(centroids)
+			assignBlogsToCentroids(blogs, centroids)
+			updateCentroids(centroids)
+		}
+
+		result := prepareClusterResult(centroids)
+		jsonResult, err := json.MarshalIndent(result, "", "    ")
+		if err != nil {
+			http.Error(w, "Error generating JSON: "+err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		w.Write(jsonResult)
 	})
 
 	fmt.Println("Starting server at :8080")
 	if err := http.ListenAndServe(":8080", nil); err != nil {
-			log.Fatal("Error starting server:", err)
+		log.Fatal("Error starting server:", err)
 	}
 }
 
