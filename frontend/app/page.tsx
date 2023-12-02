@@ -11,7 +11,7 @@ export type ClusterData = {
 
 
 async function getClusters(): Promise<ClusterData> {
-  const res = await fetch('http://localhost:8080/clusters');
+  const res = await fetch('http://localhost:8080/clusters', { cache: 'no-cache' });
   const data: ClusterData = await res.json();
   return data;
 }
@@ -21,7 +21,7 @@ async function getClusters(): Promise<ClusterData> {
 export default async function Home() {
   const clusters = await getClusters();
 
-
+  console.log(clusters)
   return (
     <main className='flex flex-col items-center justify-between p-8'>
       <Button className='mb-8'>Fetch</Button>

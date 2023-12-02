@@ -27,6 +27,11 @@ func main() {
 		for i := 0; i < maxIterations; i++ {
 			clearAssignments(centroids)
 			assignBlogsToCentroids(blogs, centroids)
+      
+            fmt.Println("Iteration", i)
+            if (checkConvergence(centroids)) {
+                break
+            }
 			updateCentroids(centroids)
 		}
 

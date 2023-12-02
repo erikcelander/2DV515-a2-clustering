@@ -4,12 +4,14 @@ import (
 	"fmt"
 	"math"
 	"math/rand"
+	"reflect"
 )
 
 
 type Centroid struct {
 	WordCounts []float64
-	Assignments []*Blog
+	Assignments    []*Blog
+	PrevAssignments []*Blog
 }
 
 const (
@@ -20,7 +22,6 @@ const (
 
 func initializeCentroids(k int) []*Centroid {
 	centroids := make([]*Centroid, k)
-
 	for i := range centroids {
 		centroid := &Centroid{WordCounts: make([]float64, numWords)}
 		for j := range centroid.WordCounts {
@@ -28,12 +29,13 @@ func initializeCentroids(k int) []*Centroid {
 		}
 		centroids[i] = centroid
 	}
-
 	return centroids
 }
 
 func clearAssignments(centroids []*Centroid) {
 	for _, c := range centroids {
+		c.PrevAssignments = make([]*Blog, len(c.Assignments))
+		copy(c.PrevAssignments, c.Assignments)
 		c.Assignments = nil
 	}
 }
@@ -85,6 +87,16 @@ func updateCentroids(centroids []*Centroid) {
 
 	}
 }
+
+func checkConvergence(centroids []*Centroid) bool {
+	for _, centroid := range centroids {
+		if !reflect.DeepEqual(centroid.Assignments, centroid.PrevAssignments) {
+			return false
+		}
+	}
+	return true
+}
+
 
 
 func pearsonDistance(centroid *Centroid, blog *Blog) float64 {
