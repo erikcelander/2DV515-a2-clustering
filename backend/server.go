@@ -7,7 +7,6 @@ import (
     "net/http"
 )
 
-// Define the structure for the response
 type ClusterResult struct {
     Cluster1 []string `json:"cluster1"`
     Cluster2 []string `json:"cluster2"`
