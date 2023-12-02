@@ -13,36 +13,36 @@ type Centroid struct {
 }
 
 const (
-	NumWords         = 706 // Total number of words
-	NumClusters      = 5   // Number of clusters
-	MaxIterations    = 10  // Maximum iterations for K-means
+	numWords         = 706 // Total number of words
+	numClusters      = 5   // Number of clusters
+	maxIterations    = 10  // Maximum iterations for K-means
 )
 
-func main() {
-	blogs, err := readBlogsFromFile("./blogdata.txt")
+// func main() {
+// 	blogs, err := readBlogsFromFile("./blogdata.txt")
 
-	if err != nil {
-		fmt.Println("Error:", err)
-		return
-	}
+// 	if err != nil {
+// 		fmt.Println("Error:", err)
+// 		return
+// 	}
 
-	centroids := initializeCentroids(NumClusters)
+// 	centroids := initializeCentroids(numClusters)
 
-	// K-means Clustering
-	for i := 0; i < MaxIterations; i++ {
-		clearAssignments(centroids)
-		assignBlogsToCentroids(blogs, centroids)
-		updateCentroids(centroids)
-	}
+// 	// K-means Clustering
+// 	for i := 0; i < maxIterations; i++ {
+// 		clearAssignments(centroids)
+// 		assignBlogsToCentroids(blogs, centroids)
+// 		updateCentroids(centroids)
+// 	}
 
-	printClusters(centroids)
-}
+// 	printClusters(centroids)
+// }
 
 func initializeCentroids(k int) []*Centroid {
 	centroids := make([]*Centroid, k)
 
 	for i := range centroids {
-		centroid := &Centroid{WordCounts: make([]float64, NumWords)}
+		centroid := &Centroid{WordCounts: make([]float64, numWords)}
 		for j := range centroid.WordCounts {
 			centroid.WordCounts[j] = rand.Float64()
 		}
@@ -92,7 +92,7 @@ func updateCentroids(centroids []*Centroid) {
 			continue
 		}
 
-		sumWordCounts := make([]float64, NumWords)
+		sumWordCounts := make([]float64, numWords)
 		for _, blog := range c.Assignments {
 			for j, count := range blog.WordCounts {
 				sumWordCounts[j] += float64(count)
