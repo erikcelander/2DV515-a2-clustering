@@ -7,7 +7,7 @@ import { Nav } from '@/components/nav'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Recommendation system',
+  title: 'Clustering',
   description: 'developed with next.js, typescript, tailwindcss and shadcn/ui',
 }
 

@@ -5,6 +5,10 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
+
+
+	
 )
 
 type CombinedClusterResult struct {
@@ -25,22 +29,20 @@ type ClusterNode struct {
 	Children []ClusterNode `json:"children,omitempty"`
 }
 
+
+
 func main() {
 	http.HandleFunc("/api/clusters", func(w http.ResponseWriter, r *http.Request) {
-		blogs, err := readBlogsFromFile("./blogdata.txt")
+		startTime := time.Now()
+
+		blogs, err := readBlogsFromFile("/Users/erik/Desktop/school/web-intelligence-2DV515/a2-clustering/backend/blogdata.txt")
 		if err != nil {
 			http.Error(w, "Error reading blogs: "+err.Error(), http.StatusInternalServerError)
 			return
 		}
 
-	  for _, blog := range blogs {
-			fmt.Println("")
-			fmt.Println(blog)
-			fmt.Println("")
-
-	}
-
 		// K-means clustering
+		kmeansStart := time.Now()
 		centroids := initializeCentroids(numClusters)
 		for i := 0; i < maxIterations; i++ {
 			clearAssignments(centroids)
@@ -54,10 +56,16 @@ func main() {
 			updateCentroids(centroids)
 		}
 		kmeansResult := prepareClusterResult(centroids)
+		kmeansTime := time.Since(kmeansStart)
+		log.Printf("K-means clustering took %v ms", kmeansTime.Milliseconds())
+
 
 		// Hierarchical clustering
+		hierarchicalStart := time.Now()
 		hierarchicalRoot := hierarchicalClustering(blogs)
 		hierarchicalResult := prepareHierarchicalResult(hierarchicalRoot)
+		hierarchicalTime := time.Since(hierarchicalStart)
+		log.Printf("Hierarchical clustering took %v ms", hierarchicalTime.Milliseconds())
 
 		combinedResult := CombinedClusterResult{
 			KMeans:       kmeansResult,
@@ -69,6 +77,10 @@ func main() {
 			http.Error(w, "Error generating JSON: "+err.Error(), http.StatusInternalServerError)
 			return
 		}
+
+
+		totalTime := time.Since(startTime)
+		log.Printf("Total time: %v ms", totalTime.Milliseconds())
 
 		w.Header().Set("Content-Type", "application/json")
 		w.Write(jsonResult)

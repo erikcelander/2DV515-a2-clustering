@@ -15,9 +15,9 @@ type Centroid struct {
 }
 
 const (
-	numWords         = 706 // Total number of words
-	numClusters      = 5   // Number of clusters
-	maxIterations    = 10  // Maximum iterations for K-means
+	numWords         = 706
+	numClusters      = 5
+	maxIterations    = 10
 )
 
 func initializeCentroids(k int) []*Centroid {

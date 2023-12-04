@@ -1,3 +1,5 @@
+import { Clusters } from '@/components/clusters'
+import HierarchicalTree from '@/components/hierarchical-tree'
 import KmeansClusters from '@/components/kmeans-clusters'
 import { Button } from '@/components/ui/button'
 
@@ -25,7 +27,7 @@ export type ClusterData = {
 
 async function getClusters(): Promise<ClusterData> {
   const res = await fetch('http://localhost:8080/api/clusters', {
-    cache: 'no-cache',
+    cache: 'no-store',
   })
   const data: ClusterData = await res.json()
   return data
@@ -36,8 +38,11 @@ export default async function Home() {
 
   return (
     <main className='flex flex-col items-center justify-between p-8'>
-      <Button className='mb-8'>Fetch</Button>
-      {/*<Clusters clusters={clusters} />*/}
+      {kmeans && hierarchical ? (
+        <Clusters kmeans={kmeans} hierarchical={hierarchical} />
+      ) : (
+        <div>An error occured fetching clusters</div>
+      )}
     </main>
   )
 }
