@@ -5,11 +5,11 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ChevronsUpDown } from "lucide-react";
-import { ClusterData } from '@/app/page'
+import { ClusterData, KmeansData } from '@/app/page'
 
 
 
-export default function Clusters({ clusters }: { clusters: ClusterData }) {
+export default function KmeansClusters({ kmeans }: { kmeans: KmeansData }) {
 
   return (
     <Card className=''>
@@ -20,7 +20,7 @@ export default function Clusters({ clusters }: { clusters: ClusterData }) {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        {Object.entries(clusters).map(([clusterName, blogs]) => (
+        {Object.entries(kmeans).map(([clusterName, blogs]) => (
           <Collapsible key={clusterName} className="mb-4">
             <div className="flex items-center justify-between px-4">
               <h2 className="text-xl font-semibold">{clusterName.toUpperCase()}</h2>
