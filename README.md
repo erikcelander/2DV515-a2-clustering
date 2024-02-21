@@ -1,5 +1,8 @@
 # A2 - Clustering
 
+Backend is in go (first time) and frontend in Next.js with TypeScript
+
+
 ## Description
 
 * In this assignment, you shall implement clustering on the blogs dataset containing 99 blogs.
